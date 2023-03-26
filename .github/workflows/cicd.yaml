@@ -30,13 +30,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          env:
-         REPO: my-username/some-repo
-          ...
-          steps:
-            ...
-                         
-          tags: ghcr.io/${{ env.REPO }}/dev:${{ github.sha }}
+          repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -)
+          tags: ghcr.io/${repo}/dev:${{ github.sha }}
+                       
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}     
 
